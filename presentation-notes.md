@@ -92,12 +92,19 @@ Over 95% goal.
 - Phase 1 (8 epochs): val 7.87%
 - Phase 2 (40 epochs): best val 30.56% (plateaued ~epoch 25)
 - Train acc 45% vs val 30% → overfitting on small dataset
-- Kaggle submission pending
+- Kaggle public score: 11.82% (public leaderboard = 11% of test data, very noisy)
+
+**Experiment 3 — CLIP ViT-B-32 (3060, 40 epochs)**
+- Phase 1 (8 epochs): val 57.41%
+- Phase 2 (40 epochs): best val 78.70%
+- Kaggle public score: 70.91%
+- Train 99% vs val 78% → still some overfitting but massive improvement over EfficientNet
 
 **Observations:**
-- More epochs helped (26% → 30%) but model plateaued
-- Gap between train/val indicates overfitting — need stronger regularization
-- Next: MixUp augmentation to combat overfitting
+- EfficientNet plateaued at 30% — not enough pretraining diversity for mixed dataset
+- CLIP jumped to 78% val / 70% Kaggle — 400M diverse pretraining makes the difference
+- Still overfitting (train 99% vs val 78%) — progressive unfreezing or MixUp could help
+- Already passing 60% Kaggle threshold — bonus points available above this
 
 ## What's next?
 - Stronger backbone (EfficientNet-B4/B5 or ViT)
