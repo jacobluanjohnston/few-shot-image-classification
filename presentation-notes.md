@@ -56,7 +56,22 @@
 
 ## Current results, Training/testing curve
 Over 95% goal.
-- Results TBD — training in progress
+
+**Experiment 1 — M1 Mac (baseline)**
+- Phase 1 (5 epochs): val 7.87%
+- Phase 2 (20 epochs): best val 26.85%
+- Still climbing at epoch 20 → needed more epochs
+
+**Experiment 2 — RTX 3060, 40 epochs**
+- Phase 1 (8 epochs): val 7.87%
+- Phase 2 (40 epochs): best val 30.56% (plateaued ~epoch 25)
+- Train acc 45% vs val 30% → overfitting on small dataset
+- Kaggle submission pending
+
+**Observations:**
+- More epochs helped (26% → 30%) but model plateaued
+- Gap between train/val indicates overfitting — need stronger regularization
+- Next: MixUp augmentation to combat overfitting
 
 ## What's next?
 - Pseudo-labeling/self supervised learning?
