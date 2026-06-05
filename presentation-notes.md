@@ -50,7 +50,6 @@
   - Model: ViT-B-32, 151M parameters
   - Train/val split: same as EfficientNet — stratified 80/20 (863 train, 216 val)
 
-
 - Image size: 224×224 (per assignment recommendation)
   - ImageNet suggested 300x300
 - Batch size: 32 -> 64
@@ -100,11 +99,23 @@ Over 95% goal.
 - Kaggle public score: 70.91%
 - Train 99% vs val 78% → still some overfitting but massive improvement over EfficientNet
 
+**Experiment 4 — CLIP ViT-B-32 Progressive Unfreezing (3060, 8+40 epochs)**
+- Phase 1 (8 epochs): val 57.41%
+- Phase 2 — 4 stages × 10 epochs, unfreezing 3 transformer blocks per stage (top → bottom)
+  - Stage 1 (blocks 11,10,9): val 62.04%
+  - Stage 2 (blocks 8,7,6): val 71.30%
+  - Stage 3 (blocks 5,4,3): val 73.61%
+  - Stage 4 (blocks 2,1,0): best val 79.63%
+- Kaggle public score: 72.73%
+- Slight improvement over full unfreeze (79.63% vs 78.70% val, 72.73% vs 70.91% Kaggle)
+- Val still climbing at end of stage 4 — more epochs could help
+
 **Observations:**
 - EfficientNet plateaued at 30% — not enough pretraining diversity for mixed dataset
 - CLIP jumped to 78% val / 70% Kaggle — 400M diverse pretraining makes the difference
-- Still overfitting (train 99% vs val 78%) — progressive unfreezing or MixUp could help
-- Already passing 60% Kaggle threshold — bonus points available above this
+- Progressive unfreezing gave slight additional boost (70.91% → 72.73% Kaggle)
+- Training curves saved to training_curves.png
+- Already passing 60% Kaggle threshold — 72.73% Kaggle = 82.73 Kaggle points
 
 ## What's next?
 - Stronger backbone (EfficientNet-B4/B5 or ViT)
