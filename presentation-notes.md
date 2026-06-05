@@ -110,27 +110,48 @@ Over 95% goal.
 - Slight improvement over full unfreeze (79.63% vs 78.70% val, 72.73% vs 70.91% Kaggle)
 - Val still climbing at end of stage 4 — more epochs could help
 
+**Experiment 5 — CLIP + Stage 5 extended (best submission)**
+- Progressive unfreezing + 20 extra epochs (stage 5)
+- Best val: 82.41% at stage 5 epoch 5
+- Kaggle public score: 73.64% ← best submission so far
+- Train ~99% vs val 82% → some overfitting but best generalization
+
+**Experiment 6 — Training on all 1000 images (no val split)**
+- Removed 80/20 split, trained on all 1079 images
+- Train reached 99.07% (stage 4) → 100% (stage 5)
+- No val accuracy to measure — flying blind
+- Kaggle public score: 71.82% → worse than experiment 5
+- Lesson: val set was doing useful work — tells us when to stop, acts as regularizer
+
+**Experiment 7 — CLIP + Augmentation (RandomResizedCrop, HFlip, ColorJitter, Rotation)**
+- Added augmentation before CLIP's preprocess
+- Best val: 78.70%, train only reached 93.5% (healthier gap)
+- Kaggle public score: 67.27% → worse
+- Lesson: augmentation pipeline conflicted with CLIP's preprocess — double cropping distorted inputs
+  - Train/val gap closed (93% vs 78% = 15% gap vs 99% vs 82% = 17% gap) showing less overfitting
+  - But absolute val accuracy dropped — augmentation hurt more than it helped here
+
 **Observations:**
 - EfficientNet plateaued at 30% — not enough pretraining diversity for mixed dataset
 - CLIP jumped to 78% val / 70% Kaggle — 400M diverse pretraining makes the difference
 - Progressive unfreezing gave slight additional boost (70.91% → 72.73% Kaggle)
+- Stage 5 extended training pushed further to 73.64% Kaggle — best result
+- Training on all data and augmentation both hurt — val set is critical for knowing when to stop
 - Training curves saved to training_curves.png
-- Already passing 60% Kaggle threshold — 72.73% Kaggle = 82.73 Kaggle points
+- Best Kaggle score: 73.64% = 83.64 Kaggle points (passing threshold is 60%)
 
 ## What's next?
-- Stronger backbone (EfficientNet-B4/B5 or ViT)
+- Resubmit experiment 5 checkpoint (73.64%) as baseline
+- TTA (test-time augmentation) — run each test image multiple times, average predictions, no retraining needed
+- CLIP ViT-L/14 — larger CLIP variant, 4x more parameters, likely what top scorers use
+- Ensemble — combine ViT-B/32 + ViT-L/14 predictions
 - Pseudo-labeling/self supervised learning?
-- ~~MixUp / CutMix augmentation~~ Try stronger backbone first
+- ~~MixUp / CutMix augmentation~~ conflicted with CLIP preprocess pipeline
   - Blends two training images together, interpolates their labels
   - Cut and paste, slightly more aggressive
   - Both regularization techniques designed for small datasets
   - MixUp — https://arxiv.org/abs/1710.09412
   - CutMix — https://arxiv.org/abs/1905.04899
-- ~~Test-time augmentation (TTA)~~ Try stronger backbone first
-  - Instead of an image at a time, run through multiple times with different augmentations (flipped, rotated, cropped) and average all predictions. Easy accuracy boost with no extra training
-- ~~Ensemble multiple seeds/architectures~~ Try stronger backbone first
-  - Train multiple models (different seeds and architectures), average their predictions
-    - Kaggle method
 
 ## Sources
 https://cs231n.github.io/transfer-learning/
