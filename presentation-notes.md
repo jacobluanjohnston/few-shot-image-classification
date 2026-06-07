@@ -39,6 +39,16 @@
       - 512 because ViT-B-32 outputs 512-dim feature vectors vs EfficientNet's 1536
     - Architecture: ViT-B-32 (Vision Transformer, Base size, 32x32 patches)
       - Image split into grid of 32x32 patches, each patch treated like word in a sentence
+  - TA suggested only fine-tuning first 2 layers of head as conservative approach to prevent overfitting
+  - Our experimental evidence disagreed — val accuracy improved with each stage of progressive unfreezing:
+    - Head only: 57.41% val
+    - After stage 1 (blocks 11,10,9): 62.04% val
+    - After stage 2 (blocks 8,7,6): 71.30% val
+    - After stage 3 (blocks 5,4,3): 73.61% val
+    - After stage 4 (blocks 2,1,0): 79.63% val
+    - After stage 5 (extended): 82.41% val
+  - Val kept improving with each unfreeze — no sign of overfitting from additional blocks
+  - Conclusion: progressive unfreezing worked better than conservative head-only approach for our mixed dataset
 
 ## Hyper-parameters
 - CLIP-specific changes:
