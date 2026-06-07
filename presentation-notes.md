@@ -13,7 +13,7 @@
     - Try to fine tune between 0.3 - 0.5.
       - Too low (0.1) and almost all neurons active very pass, prone to memorization/overfitting.
       - Too high (0.7) and too much information is thrown away/underfitting
-- Now we're trying OpenAI's CLIP (Contrastive Language-Image Pretraining)
+- Now we're trying OpenAI's CLIP (ViT-B-32, OpenAI is the pre-trained weight source) (Contrastive Language-Image Pretraining)
   - EfficientNet only knows ImageNet's 1000 categories. Our dataset is mixed (food, cars, planes, etc.) sampled from multiple sources probably.
   - CLIP was trained on 400M diverse internet images so it has broader knowledge
   - Tradeoff is 151M params but CLIP's pretraining is so strong that possibly with even a few images it will generalize better than the previous model.
