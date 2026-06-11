@@ -34,7 +34,9 @@ Full experimental history (including the failed ImageNet baseline, augmentation,
 ```
 
 ## Model Weights
-Download the four ViT-L/14 fold checkpoints (these produce the final submission) from Google Drive:
+Download the four ViT-L/14 fold checkpoints (these produce the final submission) from Google Drive: 
+
+[Google Drive link](https://drive.google.com/drive/folders/1v4LNmkT7vuijzR158JHYWO7OluFWj96u?usp=sharing)
 
 Right now, the weights are pending upload. 
 
