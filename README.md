@@ -83,13 +83,18 @@ Run `final_clip_kfold.ipynb` top to bottom:
 2. **Stage 1 (L/14 gate)** — head-only CV on ViT-L/14; proceed only if it beats B/16 head-only by > 2×SE (it does: 0.8823 > 0.8583).
 3. **Stage 2** (`RUN_L14_UNFREEZE = True`) — 4-fold LP-FT CV on L/14, saving one checkpoint per fold.
 4. **Stage 3** (`RUN_L14_SUBMISSION = True`) — fold-ensemble inference → `submission_l14_ensemble.csv`.
+
 ## Reproducibility
  
 - Global seed 42; fold *i* reseeds with 42 + *i*. `StratifiedKFold(n_splits=4, shuffle=True, random_state=42)` over a sorted directory traversal makes fold membership deterministic.
 - cuDNN determinism flags are not forced, so GPU runs may vary by a fraction of a point; CV numbers are means over 4 folds.
 - Hardware used: NVIDIA GeForce RTX 3060 (CUDA), Windows. Exact package versions in `requirements.txt`.
+
 ## Method notes
  
 - **Why LP-FT:** training the head first on frozen cached embeddings is nearly free (milliseconds per epoch) and avoids the feature distortion a randomly initialized head causes during fine-tuning (Kumar et al., ICLR 2022).
 - **Why unfreeze only 2 blocks:** chosen by the one-SE rule — `unfreeze_4` scored higher on mean but within noise of `unfreeze_2`, so the simpler config wins.
 - **Why no augmentation:** horizontal flip cost 6.4 public points in ablation; with ~8 images/class/fold and a test set from the same distribution, regularization wasn't worth the input shift.
+
+## Report
+[CSE_144_Final_Project_Report.pdf](report/CSE_144_Final_Project_Report.pdf)
